@@ -35,7 +35,7 @@ class Product(models.Model):
     vendor=models.ForeignKey(Vendor,on_delete=models.CASCADE)
     category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="products")
     price=models.DecimalField( max_digits=5, decimal_places=2)
-    discount_price=models.DecimalField(max_digits=10,decimal_places=2,blank=True)
+    discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     stock=models.IntegerField()
     #available=models.BooleanField(default=True)
     images=models.ImageField(upload_to='products/')
