@@ -19,6 +19,7 @@ class Vendor(models.Model):
     bank_details = models.TextField()
     shipping_policy=models.TextField()   
     return_policy=models.TextField() 
+    shipping_address = models.CharField(max_length=255, default="Not Provided") 
 
 class Category(models.Model):
     name=models.CharField(max_length =100)
@@ -37,8 +38,10 @@ class Product(models.Model):
     price=models.DecimalField( max_digits=5, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     stock=models.IntegerField()
+  
     #available=models.BooleanField(default=True)
     images=models.ImageField(upload_to='products/')
+    is_flash_sale=models.BooleanField(default= False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     #sku =models.CharField(max_length=100,unique=True)
