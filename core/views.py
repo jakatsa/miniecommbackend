@@ -1,4 +1,6 @@
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from .models import (
     User, Vendor, Category, Product, Order, OrderItem, Cart, CartItem,
     Shipping, Payment, Coupon, Review, WishList, Notification, Blog, 
@@ -35,7 +37,14 @@ class CategoryViewSet(BaseViewSet):
 
 class ProductViewSet(BaseViewSet):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer  
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_term = self.request.query_params.get('search', None)
+        if search_term:
+            queryset = queryset.filter(name__icontains=search_term)
+        return queryset
 
 class OrderViewSet(BaseViewSet):
     queryset = Order.objects.all()
