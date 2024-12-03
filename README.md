@@ -89,8 +89,7 @@ python3 manage.py migrate
 ## 📝 Future Enhancements
 
 Payment Integration:
-Enable secure transactions using third-party gateways.
-Advanced Search & Filtering:
+Enable secure transactions using third-party gateways.(Mpesa & PayPal)
 
 Order Management:
 Implement cart and checkout workflows.
