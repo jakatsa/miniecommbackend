@@ -35,7 +35,7 @@ class CategoryViewSet(BaseViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer    
 
-class ProductViewSet(BaseViewSet):
+class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -46,15 +46,13 @@ class ProductViewSet(BaseViewSet):
             queryset = queryset.filter(name__icontains=search_term)
         return queryset
 
-class OrderViewSet(BaseViewSet):
+class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-class OrderItemViewSet(BaseViewSet):
+class OrderItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
-
-
 class CartViewSet(BaseViewSet):
     queryset = Cart.objects.all()  # Corrected here
     serializer_class = CartSerializer  

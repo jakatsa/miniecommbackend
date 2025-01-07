@@ -1,5 +1,6 @@
 
 from django.db import models
+from django.utils import timezone
 # Create your models here.
 class User(models.Model):
     name=models.CharField(max_length=100)
@@ -30,60 +31,55 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
-    name=models.CharField(max_length=100)
-    description=models.CharField(max_length=200)
-    slug=models.SlugField(max_length=100,unique=True)
-    vendor=models.ForeignKey(Vendor,on_delete=models.CASCADE)
-    category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="products")
-    price=models.DecimalField( max_digits=5, decimal_places=2)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=100, unique=True)
+    vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name="products")
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    stock=models.IntegerField()
-  
-    #available=models.BooleanField(default=True)
-    images=models.ImageField(upload_to='products/')
-    is_flash_sale=models.BooleanField(default= False)
-    created_at=models.DateTimeField(auto_now_add=True)
+    stock = models.IntegerField()
+    images = models.ImageField(upload_to='products/')
+    is_flash_sale = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    #sku =models.CharField(max_length=100,unique=True)
-    #rating = models.FloatField(blank=True,null=True)
 
     def __str__(self):
         return self.name
 
 class Order(models.Model):
-    customer=models.ForeignKey(User,on_delete=models.CASCADE,related_name='orders')
-    #status = models.CharField(max_length=50,choices=[
-    #    ('pending','Pending'),
-    #    ('completed','Completed'),
-    #    ('canceled','Canceled'),
-    #    ('shipped','Shipped'),
-    #    ('delivered','Deleivered'),
-    #])        
-    total_price = models.DecimalField(max_digits=10,decimal_places=2)
-    #order_date=models.DateTimeField(auto_now_add=True)
-    shipping_address =models.TextField()
-    #billing_address= models.TextField(blank=True,null=True)
-    products =models.ManyToManyField(Product,through='OrderItem')#Items Ordered:You can use a Many-to-Many relationship with a Product model if you expect orders to contain multiple products.
-    #quantity=models.PositiveIntegerField(default=1)
-    #payment_method=models.CharField(max_length=50,choices=[
-    #    ('credit_card','credit Card'),
-    #    ('paypal','PayPal'),
-    #    ('bank_transfer','Bank Transfer')
-    #    ('mpesa', 'Mpesa')
-    #])
-    #transaction_id= models.CharField(max_length=100,blank=True,null=True)
-    created_at=models.DateTimeField(auto_now_add=True)
-    updated_at=models.DateTimeField(auto_now=True )
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    status = models.CharField(max_length=50, choices=[
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('canceled', 'Canceled'),
+        ('shipped', 'Shipped'),
+        ('delivered', 'Delivered'),
+    ], default='pending')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    order_date = models.DateTimeField(default=timezone.now)
+    shipping_address = models.TextField()
+    billing_address = models.TextField(blank=True, null=True)
+    payment_method = models.CharField(max_length=50, choices=[
+        ('credit_card', 'Credit Card'),
+        ('paypal', 'PayPal'),
+        ('bank_transfer', 'Bank Transfer'),
+        ('mpesa', 'Mpesa')
+    ], default='credit_card')
+    transaction_id = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
-        return f'Order {self.id} by {self.customer.name}'
-          
+        return f'Order {self.id} by {self.customer.username}'
+
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE,related_name='items')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
- 
+
     def __str__(self):
-        return f'{self.quantity} x {self.product.name} in Order {self.order.id}'  
+        return f'Order {self.order.id} - Product {self.product.name}'
 
 class Cart(models.Model):
     customer=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)

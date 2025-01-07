@@ -28,29 +28,40 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'  
 
 class ProductSerializer(serializers.ModelSerializer):
-    vendor = VendorSerializer(read_only=True)
-    category = CategorySerializer(read_only=True)
-
     class Meta:
         model = Product
-        fields = '__all__' 
-
-class OrderSerializer(serializers.ModelSerializer):
-    customer = UserSerializer(read_only=True)
-    products = ProductSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Order
-        fields = '__all__' 
+        fields = '__all__'
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(read_only=True)
-    order = OrderSerializer(read_only=True)
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
 
     class Meta:
         model = OrderItem
-        fields = '__all__' 
+        fields = ['product', 'quantity']
 
+class OrderSerializer(serializers.ModelSerializer):
+    customer = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    items = OrderItemSerializer(many=True)  # Rename to match related_name
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+        total_price = 0
+
+        for item_data in items_data:
+            product = item_data['product']
+            quantity = item_data['quantity']
+            total_price += product.price * quantity
+            OrderItem.objects.create(order=order, product=product, quantity=quantity)
+
+        order.total_price = total_price
+        order.save()
+        return order
+        
 class CartSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)  # Assuming Cart has multiple products
     customer = UserSerializer(read_only=True)
