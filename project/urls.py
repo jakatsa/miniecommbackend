@@ -20,14 +20,20 @@ from django.conf import settings
 from django.conf.urls.static import static 
 
 
-from core.views import get_products, post_products,CustomTokenObtainPairView,CustomRefreshToken
+from core.views import get_products, post_products,CustomTokenObtainPairView,CustomRefreshToken,logout,is_Authenticated,user_registration
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('core.urls')),
-    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+   
+     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', CustomRefreshToken.as_view(), name='token_refresh'),
     path('products/', get_products, name='get_products'),
-    path('products/post',post_products, name='post_products')
+    path('products/post/',post_products, name='post_products'),
+    path('api/v1/logout/',logout, name='logout'),
+    path('api/v1/is_Authenticated/',is_Authenticated, name='is_Authenticated'),
+    path('api/v1/register/',user_registration, name='user_registration')
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+

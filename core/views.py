@@ -13,7 +13,7 @@ from .models import (
     Contact, FAQ, Analytics, Configuration, Tax, Subscription, Refund
 )
 from .serializers import (
-    UserSerializer, VendorSerializer, CategorySerializer, ProductSerializer, 
+    UserSerializer,UserRegistrationSerializer, VendorSerializer, CategorySerializer, ProductSerializer, 
     OrderSerializer, OrderItemSerializer, CartSerializer, CartItemSerializer,
     ShippingSerializer, PaymentSerializer, CouponSerializer, ReviewSerializer, 
     WishListSerializer, NotificationSerializer, BlogSerializer, ContactSerializer, 
@@ -122,6 +122,34 @@ def post_products(request):
     products = Product.objects.filter(vendor=user)
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def logout(request):
+    try:
+        res=Response()
+        res.data={"success":True}
+        res.delete_cookie('access_token',path='/',samesite='None')  
+        res.delete_cookie('refresh_token',path='/',samesite='None')    
+        return res
+    except:
+        return Response({"success":False})
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny]) 
+def user_registration(request):
+    serializer=UserRegistrationSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.error)    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def is_Authenticated(request):
+    return Response({'authenticated':True})
+
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()

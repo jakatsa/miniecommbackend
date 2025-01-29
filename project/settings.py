@@ -50,7 +50,7 @@ REST_FRAMEWORK = {
         'core.authentication.CookiesJWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+       'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ]
     
 }
