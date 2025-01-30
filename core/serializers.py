@@ -14,12 +14,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     password=serializers.CharField(write_only=True)
     class Meta:
        model = User
-       fields = '__all__'
+       fields = ['name','email','password']
 
     def  create(self,validated_data):
         user=User(
-            username=validated_data['username'],
-            email=validated_data['email']
+            name=validated_data['name'],
+            email=validated_data['email'],
+            is_vendor=validated_data.get('is_vendor', False),  # Set is_vendor if provided, otherwise default to False
+            is_admin=validated_data.get('is_admin', False),    # Set is_admin if provided, otherwise default to False
 
         )   
         user.set_password(validated_data['password'])
