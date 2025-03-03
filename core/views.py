@@ -4,9 +4,9 @@ from rest_framework import filters
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.response import Response
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.views import TokenRefreshView
+# from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+# from rest_framework_simplejwt.views import TokenObtainPairView
+# from rest_framework_simplejwt.views import TokenRefreshView
 from .models import (
     User, Vendor, Category, Product, Order, OrderItem, Cart, CartItem,
     Shipping, Payment, Coupon, Review, WishList, Notification, Blog, 
@@ -30,7 +30,7 @@ class BaseViewSet(viewsets.ModelViewSet):
         serializer.save()
 
 #refresh token cookies        
-class CustomRefreshToken(TokenRefreshView):
+# class CustomRefreshToken(TokenRefreshView):
     def post (self,request ,*args,**kwargs):
         try:
             refresh_token=request.COOKIES.get('refresh_token')
@@ -58,8 +58,8 @@ class CustomRefreshToken(TokenRefreshView):
 
 
 
-#access token cookies 
-class CustomTokenObtainPairView(TokenObtainPairView):
+# #access token cookies 
+# class CustomTokenObtainPairView(TokenObtainPairView):
     def post (self,request ,*args,**kwargs):
         try:
             response=super().post(request,*args,**kwargs)
@@ -123,8 +123,8 @@ def post_products(request):
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
-@api_view(['POST'])
-def logout(request):
+# @api_view(['POST'])
+# def logout(request):
     try:
         res=Response()
         res.data={"success":True}
@@ -135,19 +135,19 @@ def logout(request):
         return Response({"success":False})
 
 
-@api_view(['POST'])
-@permission_classes([AllowAny]) 
-def user_registration(request):
-    serializer=UserRegistrationSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors)    
+# @api_view(['POST'])
+# @permission_classes([AllowAny]) 
+# def user_registration(request):
+#     serializer=UserRegistrationSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data)
+#     return Response(serializer.errors)    
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def is_Authenticated(request):
-    return Response({'authenticated':True})
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def is_Authenticated(request):
+#     return Response({'authenticated':True})
 
 
 

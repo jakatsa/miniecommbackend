@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -25,7 +27,8 @@ SECRET_KEY = 'django-insecure-%mh_5qqir&ev@!!@=x-6a@w))zhqd#n2^7v4=0%hsf$cu=6)2t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
+    'django_daraja',
 ]
 
 REST_FRAMEWORK = {
@@ -139,3 +143,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+MPESA_ENVIRONMENT =  os.getenv('MPESA_ENVIRONMENT')
+MPESA_CONSUMER_KEY =  os.getenv('MPESA_CONSUMER_KEY')
+MPESA_CONSUMER_SECRET =  os.getenv('MPESA_CONSUMER_SECRET')
+MPESA_SHORTCODE =  os.getenv('MPESA_SHORTCODE')
+MPESA_EXPRESS_SHORTCODE =  os.getenv('MPESA_EXPRESS_SHORTCODE')
+MPESA_SHORTCODE_TYPE =  os.getenv('MPESA_SHORTCODE_TYPE')
+MPESA_PASSKEY =  os.getenv('MPESA_PASSKEY')
+MPESA_INITIATOR_USERNAME =  os.getenv('MPESA_INITIATOR_USERNAME')
+MPESA_INITIATOR_SECURITY_CREDENTIALS =  os.getenv('MPESA_INITIATOR_SECURITY_CREDENTIALS')
+
