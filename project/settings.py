@@ -72,6 +72,17 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'project.urls'
 
+
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -144,7 +155,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+#mpesa
 
 MPESA_ENVIRONMENT =  os.getenv('MPESA_ENVIRONMENT')
 MPESA_CONSUMER_KEY =  os.getenv('MPESA_CONSUMER_KEY')
@@ -155,4 +166,5 @@ MPESA_SHORTCODE_TYPE =  os.getenv('MPESA_SHORTCODE_TYPE')
 MPESA_PASSKEY =  os.getenv('MPESA_PASSKEY')
 MPESA_INITIATOR_USERNAME =  os.getenv('MPESA_INITIATOR_USERNAME')
 MPESA_INITIATOR_SECURITY_CREDENTIALS =  os.getenv('MPESA_INITIATOR_SECURITY_CREDENTIALS')
+NGROK_URL =  os.getenv('NGROK_URL')
 
