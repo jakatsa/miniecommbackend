@@ -28,7 +28,11 @@ SECRET_KEY = 'django-insecure-%mh_5qqir&ev@!!@=x-6a@w))zhqd#n2^7v4=0%hsf$cu=6)2t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    "https://miniecommbackend.onrender.com",  # Render domain
+    "localhost",                     # Local development
+    "127.0.0.1"
+]
 
 
 
