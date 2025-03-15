@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .mpesa import index
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from .views import (
     UserViewSet, VendorViewSet, CategoryViewSet, ProductViewSet, OrderViewSet,
     OrderItemViewSet, CartViewSet, CartItemViewSet, ShippingViewSet, 
@@ -36,6 +36,6 @@ router.register(r'refunds', RefundViewSet)
 
 urlpatterns = [
     path('api/v1/', include(router.urls)),
-    path('test/',index, name='test')
-    
+  
 ]
+urlpatterns+=staticfiles_urlpatterns()

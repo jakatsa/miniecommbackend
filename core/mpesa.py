@@ -121,14 +121,45 @@ def initiate_payment(request):
         logger.warning('Invalid request method')
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
+@csrf_exempt
+def mpesa_callback(request):
+    logger.info('Mpesa callback called')
+    if request.method == 'POST':
+        try:
+            body = request.body.decode('utf-8')
+            response = json.loads(body)
+            logger.debug(f'Callback response:{response}')
 
-def index(request):
-    cl = MpesaClient()
-    # Use a Safaricom phone number that you have access to in order to view the prompt.
-    phone_number = '0710246270'
-    amount = 1
-    account_reference = 'reference'
-    transaction_desc = 'Description'
-    callback_url = 'https://api.darajambili.com/express-payment'
-    response = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
-    return HttpResponse(response)
+            if response['Body']['stkCallback']['ResultCode'] == 0:
+                callback_metadata = response['Body']['stkCallback']['CallbackMetadata']
+                merchant_request_id= response['Body']['stkCallback']['MerchantRequestID']
+                checkout_request_id = response['Body']['stkCallback']['CheckoutRequestID']
+                amount = next(item['Value'] for item in callback_metadata if item['Name'] == 'Amount')
+                mpesa_receipt_number= next(item['Value'] for item in callback_metadata if item['Name'] == 'MpesaReceiptNumber')
+                transaction_date= next(item['Value'] for item in callback_metadata if item['Name'] == 'TransactionDate')
+                phone_number= next(item['Value'] for item in callback_metadata if item['Name'] == 'PhoneNumber')
+
+                payment = Payment.objects.filter(transaction_id = checkout_request_id).first()
+                if payment:
+                    payment.status = 'completed'
+                    payment.save()
+                    order = payment.order
+                    order.status = 'PAID'
+                    order.save()
+                    logger.info('Payment completed successfully')
+                    return JsonResponse({'success':True})
+                else:
+                    logger.warning('Payment not found')
+                    return JsonResponse({'success': False, 'message':'Payment not found'})
+            else:
+                logger.warning('Transaction Failed')
+                return JsonResponse({'success':False,'message':'Transaction failed'})  
+
+        except Exception as e:
+            logger.error(f'Error in callback processing:{e}')
+            return JsonResponse({'success':False,'message':str(e),status=500})
+    else:
+        logger.warning('Invalid request method')
+        return JsonResponse({'succes':False,'message':'Invalid request method'})        
+
+
