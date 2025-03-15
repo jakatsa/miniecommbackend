@@ -29,8 +29,8 @@ SECRET_KEY = 'django-insecure-%mh_5qqir&ev@!!@=x-6a@w))zhqd#n2^7v4=0%hsf$cu=6)2t
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "miniecommbackend.onrender.com",  # Render domain
-    "localhost",                     # Local development
+    "miniecommbackend.onrender.com",  
+    "localhost",                     
     "127.0.0.1"
 ]
 
