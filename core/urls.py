@@ -1,6 +1,5 @@
 from django.urls import path, include
 from rest_framework import routers
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from .views import (
     UserViewSet, VendorViewSet, CategoryViewSet, ProductViewSet, OrderViewSet,
     OrderItemViewSet, CartViewSet, CartItemViewSet, ShippingViewSet, 
@@ -38,4 +37,3 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
   
 ]
-urlpatterns+=staticfiles_urlpatterns()

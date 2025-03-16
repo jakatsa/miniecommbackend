@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static 
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 from core.views import get_products, post_products
@@ -36,5 +37,6 @@ urlpatterns = [
     # path('api/v1/is_Authenticated/',is_Authenticated, name='is_Authenticated'),
     # path('api/v1/register/',user_registration, name='user_registration')
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+urlpatterns+=staticfiles_urlpatterns()
 
 
