@@ -14,6 +14,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
 import os
+import cloudinary_storage
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -50,6 +51,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt',
     'django_daraja',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 REST_FRAMEWORK = {
@@ -175,3 +178,11 @@ MPESA_INITIATOR_USERNAME =  os.getenv('MPESA_INITIATOR_USERNAME')
 MPESA_INITIATOR_SECURITY_CREDENTIALS =  os.getenv('MPESA_INITIATOR_SECURITY_CREDENTIALS')
 NGROK_URL =  os.getenv('NGROK_URL')
 
+#cloudinary
+CLOUDINARY_STORAGE={
+    'CLOUD_NAME':'dv2kypdpj',
+    'API_KEY': '747435718343942',
+    'API_SECRET': 'os_Aj2S1zCNksNXG7soosYR6ed8'
+}
+
+DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
