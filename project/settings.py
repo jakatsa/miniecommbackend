@@ -122,9 +122,10 @@ WSGI_APPLICATION = 'project.wsgi.application'
 #     }
 # }
 
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3")
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-} 
+    'default': dj_database_url.parse(DATABASE_URL)
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

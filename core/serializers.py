@@ -46,9 +46,18 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'  
 
 class ProductSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()  
+
     class Meta:
         model = Product
-        fields = '__all__'
+      
+        fields = ['id', 'name', 'description', 'slug', 'vendor', 'category', 'price',
+                  'discount_price', 'stock', 'images', 'image_url', 'is_flash_sale',
+                  'created_at', 'updated_at']
+
+    def get_image_url(self, obj):
+        return obj.images.url if obj.images else ""
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
