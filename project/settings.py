@@ -17,19 +17,16 @@ import os
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%mh_5qqir&ev@!!@=x-6a@w))zhqd#n2^7v4=0%hsf$cu=6)2t'
+SECRET_KEY = os.getenv('SECRET_KEY')                           
+DEBUG      = os.getenv('DEBUG', 'False') == 'True' 
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
 
 ALLOWED_HOSTS = [
     "miniecommbackend.onrender.com",  
@@ -182,17 +179,17 @@ MPESA_INITIATOR_USERNAME =  os.getenv('MPESA_INITIATOR_USERNAME')
 MPESA_INITIATOR_SECURITY_CREDENTIALS =  os.getenv('MPESA_INITIATOR_SECURITY_CREDENTIALS')
 NGROK_URL =  os.getenv('NGROK_URL')
 
-#cloudinary
-CLOUDINARY_STORAGE={
-    'CLOUD_NAME':'dv2kypdpj',
-    'API_KEY': '747435718343942',
-    'API_SECRET': 'os_Aj2S1zCNksNXG7soosYR6ed8'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY':    os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }
 
-DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 cloudinary.config(
-    cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
-    api_key=CLOUDINARY_STORAGE.get('API_KEY'),
-    api_secret=CLOUDINARY_STORAGE.get('API_SECRET'),
+    cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
+    api_key=CLOUDINARY_STORAGE['API_KEY'],
+    api_secret=CLOUDINARY_STORAGE['API_SECRET'],
     secure=True
 )
