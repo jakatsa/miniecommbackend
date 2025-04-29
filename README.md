@@ -80,7 +80,8 @@ env\Scripts\activate # Windows
 
 ## Step 4: run requirements.txt
 
-python3 manage.py migrate
+pip install -r requirements.txt
+
 
 ## Step 5: Apply Migrations
 
