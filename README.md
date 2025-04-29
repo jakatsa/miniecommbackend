@@ -78,13 +78,17 @@ python -m venv env
 source env/bin/activate # Linux/Mac
 env\Scripts\activate # Windows
 
-## Step 4: Apply Migrations
+## Step 4: run requirements.txt
+
+python3 manage.py migrate
+
+## Step 5: Apply Migrations
 
 python3 manage.py migrate
 
 ## Step 5: Start the Development Server
 
-python3 manage.py migrate
+python3 manage.py runserver 8080
 
 ## 📝 Future Enhancements
 
